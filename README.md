@@ -19,7 +19,10 @@
 ### Slack
 
 #### Feature
-1. Notify service deployment to predefined Slack channel with custom username
+1. Notify service deployment to predefined Slack channel with custom username. Supporting states
+  - Deployment started
+  - Deployment succeeded
+  - Deployment failed
 2. Predefined message format
 3. Support Slack thread
 
@@ -30,8 +33,8 @@ In your `serverless.yml` fill the following configuration
 custom:
   notification:
     slack:
-      token: /* Your slack token here */
-      channel:  /* Your channel name here */  ` e.g '@james' or '#serverless'
+      token: /* Your slack token here */ - Follow https://api.slack.com/bot-users to get bot access token
+      channel:  /* Your channel name here */ e.g '#serverless' NOTE: Using direct message '@person' will have 'channel_not_found' error at `Deployment succeeded` and `Deployment failed`
       username: /* (Optional) Username that will be used to post the message */
 ```
 
