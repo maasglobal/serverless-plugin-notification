@@ -52,20 +52,26 @@ class Slack {
   buildReply(notification) {
     const formatEndpoint = (endpointObj) => `${endpointObj.method}~${endpointObj.path}`;
     return {
-      text: `
-        List of lambdas:
-        \`\`\`
-        ${notification.functions.join('\n')}
-        \`\`\`
-        List of endpoints:
-        \`\`\`
-        ${notification.endpoints.map(formatEndpoint).join('\n')}
-        \`\`\`
-      `,
+      functions: [
+        {
+          title: 'Function listing',
+          color: '#49311c',
+          text: `\n${notification.functions.join('\n')}`,
+          mrkdwn: true,
+        },
+      ],
+      endpoints: [
+        {
+          title: 'Endpoint listing',
+          color: '#49311c',
+          text: `\n${notification.endpoints.map(formatEndpoint).join('\n')}`,
+          mrkdwn: true,
+        },
+      ],
     };
   }
 
-  notify(notification) {
+  notify(notification, log) {
     if (!this.token) throw new Error('Cannot send slack notification without slack token');
     if (!this.channel) throw new Error('Cannot send slack notification without a specified channel');
 
@@ -77,7 +83,6 @@ class Slack {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      verbose: true,
       json: true,
       form: {
         token: this.token,
@@ -93,33 +98,33 @@ class Slack {
         if (response.ok === false) throw new Error(response);
 
         // All good
-        console.info(`[SLACK] Succesfully sent notification message, received response: \n${JSON.stringify(response)}`);
+        console.info('[Serverless Plugin Notification | Slack] Succesfully sent notification message');
 
         // Put function and endpoint listing to reply
-        const queryReply = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          verbose: true,
-          json: true,
-          form: {
-            token: this.token,
-            channel: this.channel,
-            thread_ts: response.ts,
-            text: JSON.stringify(reply.text),
-            username: this.username,
-          },
-        };
-
-        return request.post(`${SLACK_BASEURL}/chat.postMessage`, queryReply)
-          .then(response => {
-            if (response.ok === false) throw new Error(response);
-            // All good
-            console.info(`[SLACK] Succesfully sent notification reply, received response: \n${JSON.stringify(response)}`);
-          });
+        return Promise.all(Object.keys(reply).map(key => {
+          const queryReply = {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            json: true,
+            form: {
+              token: this.token,
+              channel: this.channel,
+              thread_ts: response.ts,
+              attachments: JSON.stringify(reply[key]),
+              username: this.username,
+            },
+          };
+          return request.post(`${SLACK_BASEURL}/chat.postMessage`, queryReply)
+            .then(response => {
+              if (response.ok === false) throw new Error(response);
+              // All good
+              console.info('[Serverless Plugin Notification | Slack] Succesfully sent notification reply');
+            });
+        }));
       })
       .catch(error => {
-        console.error(`[SLACK] error sending one of the message, error \n${JSON.stringify(error)}`);
+        console.error(`[Serverless Plugin Notification | Slack] error sending one of the message, error \n${JSON.stringify(error)}`);
         return;
       });
   }

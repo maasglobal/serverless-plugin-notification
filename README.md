@@ -14,6 +14,9 @@
 4. Follow platform specific installation
   - [Slack](#slack)
 
+## Debug
+Use `SLS_DEBUG=*` or `SLS_DEBUG=notification` to show plugin logs
+
 ## Supported platforms
 
 ### Slack
@@ -23,7 +26,7 @@
   - Deployment started
   - Deployment succeeded
   - Deployment failed
-2. Predefined message format
+2. Predefined message format - General info in post, function and endpoint listing in thread reply
 3. Support Slack thread
 
 #### Platform installation
