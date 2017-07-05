@@ -12,11 +12,29 @@ class Slack {
 
   buildPost(notification) {
 
+    const colorGray = '#D3D3D3';
+    const colorGreen = 'good';
+    const colorYeallow = 'warning';
+    // const colorRed = 'danger';
+
+    let icon = ':dark_sunglasses:';
+    let color = colorGray;
+
+    if (notification.severity === 'good') {
+      icon = ':tada:';
+      color = colorGreen;
+    }
+
+    if (notification.severity === 'warning') {
+      icon = ':rotating_light:';
+      color = colorYeallow;
+    }
+
     return {
       attachments: [
         {
-          color: notification.severity,
-          title: notification.message,
+          color: color,
+          title: `${notification.message} ${icon} ${icon} ${icon}`,
           text: `Invocation ID: ${notification.invocationId}\nStage: ${notification.stage}\nRegion: ${notification.region}
           `,
           author_name: 'Serverless Plugin Notification',

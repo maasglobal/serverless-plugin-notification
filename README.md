@@ -25,9 +25,10 @@ Use `SLS_DEBUG=*` or `SLS_DEBUG=notification` to show plugin logs
 1. Notify service deployment to predefined Slack channel with custom username. Supporting states
   - Deployment started
   - Deployment succeeded
-  - Deployment failed
+  - Deployment failed (TODO)
 2. Predefined message format - General info in post, function and endpoint listing in thread reply
 3. Support Slack thread
+4. EMOJIs !
 
 #### Platform installation
 
