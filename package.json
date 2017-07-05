@@ -16,9 +16,12 @@
     "url": "https://github.com/blackevil245/serverless-plugin-notification/issues"
   },
   "homepage": "https://github.com/blackevil245/serverless-plugin-notification#readme",
-  "dependencies": {},
+  "dependencies": {
+    "request-promise-lite": "^0.8.1"
+  },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "bluebird": "^3.5.0",
     "chai": "^4.0.1",
     "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
