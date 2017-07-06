@@ -28,7 +28,8 @@ Use `SLS_DEBUG=*` or `SLS_DEBUG=notification` to show plugin logs
   - Deployment failed (TODO)
 2. Predefined message format - General info in post, function and endpoint listing in thread reply
 3. Support Slack thread
-4. EMOJIs !
+4. Support automatically retrieving deployer name
+5. EMOJIs !
 
 #### Platform installation
 
@@ -36,6 +37,7 @@ In your `serverless.yml` fill the following configuration
 ```yaml
 custom:
   notification:
+    deployer: /* Default deployer name, if not automatically retrieve from local variable, if not default to 'Unnamed deployer' */
     slack:
       token: /* Your slack token here */ - Follow https://api.slack.com/bot-users to get bot access token
       channel:  /* Your channel name here */ e.g '#serverless' NOTE: Using direct message '@person' will have 'channel_not_found' error at `Deployment succeeded` and `Deployment failed`

@@ -10,7 +10,6 @@ class ServerlessPluginNotification {
     this.invocationId = this.serverless.invocationId;
     this.options = options;
     this.service = this.serverless.service;
-    // this.provider = this.service.provider;
     this.settings = this.getNotificationSettings();
 
     if (this.settings.slack) {
@@ -53,12 +52,14 @@ class ServerlessPluginNotification {
   }
 
   buildDeploymentNotification(message, severity) {
+    const deployer = process.env.USER || process.env.LOGNAME || process.env.USERNAME || process.env.SUDO_USER || process.env.LNAME || this.settings.deployer || 'Unnamed deployer';
     return {
+      deployer,
       invocationId: this.invocationId,
       message,
       providerName: this.provider.name,
-      stage: this.provider.stage,
-      region: this.provider.region,
+      stage: this.options.stage || this.provider.stage,
+      region: this.options.region || this.provider.region,
       runtime: this.provider.runtime,
       functions: this.functions,
       endpoints: this.endpoints,
