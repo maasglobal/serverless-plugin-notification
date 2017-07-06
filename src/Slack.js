@@ -89,9 +89,9 @@ class Slack {
     };
   }
 
-  notify(notification, log) {
-    if (!this.token) throw new Error('Cannot send slack notification without slack token');
-    if (!this.channel) throw new Error('Cannot send slack notification without a specified channel');
+  notify(notification) {
+    if (!this.token) return Promise.reject(Error('Cannot send slack notification without slack token'));
+    if (!this.channel) return Promise.reject(Error('Cannot send slack notification without a specified channel'));
 
     const message = this.buildPost(notification);
     const reply = this.buildReply(notification);

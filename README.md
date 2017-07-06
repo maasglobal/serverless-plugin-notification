@@ -42,4 +42,22 @@ custom:
       username: /* (Optional) Username that will be used to post the message */
 ```
 
-#### Response demo
+### Webhook
+
+#### Feature
+1. Notify service deployment through http webhook POST using configurable url and headers
+
+#### Missing pieces
+1. `Content-Type` currently support only `application/json`
+2. Does not support CORs
+
+#### Plattform installation
+In your `serverless.yml` fill the following configuration
+```yaml
+custom:
+  notification:
+    webhook:
+      url: /* Your webhook url here */
+      headers: /* Your headers here - Must be in object format */
+        Content-Type: application/json
+```
