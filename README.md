@@ -13,9 +13,7 @@
 3. Add `serverless-plugin-notification` in your `serverless.yml` file (see [Serverless docs](https://serverless.com/framework/docs/providers/aws/guide/plugins/#installing-plugins))
 4. Follow platform specific installation
   - [Slack](#slack)
-
-## Debug
-Use `SLS_DEBUG=*` or `SLS_DEBUG=notification` to show plugin logs
+  - [Webhook](#webhook)
 
 ## Supported platforms
 
@@ -47,7 +45,10 @@ custom:
 ### Webhook
 
 #### Feature
-1. Notify service deployment through http webhook POST using configurable url and headers
+1. Notify service deployment through http webhook POST using configurable url and headers. Supporting states:
+  - Deployment started
+  - Deployment succeeded
+  - Deployment failed (TODO)
 
 #### Missing pieces
 1. `Content-Type` currently support only `application/json`
