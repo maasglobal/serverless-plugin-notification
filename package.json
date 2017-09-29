@@ -1,6 +1,6 @@
 {
   "name": "serverless-plugin-notification",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Plugin for serverless framework that notify framework actions to multiple platforms",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/maasglobal/serverless-plugin-notification#readme",
   "dependencies": {
-    "request-promise-lite": "^0.8.1",
+    "request-promise-lite": "0.9",
     "bluebird": "^3.5.0"
   },
   "devDependencies": {
