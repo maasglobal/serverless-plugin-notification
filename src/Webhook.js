@@ -7,7 +7,7 @@ class Webhook {
     this.headers = settings.headers || {};
   }
 
-  notify(notification) {
+  notify(notification, logger) {
 
     if (!this.url) return Promise.reject(new Error('Cannot send webhook notification without url'));
 

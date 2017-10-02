@@ -89,10 +89,9 @@ class Slack {
     };
   }
 
-  notify(notification) {
+  notify(notification, logger) {
     if (!this.token) return Promise.reject(Error('Cannot send slack notification without slack token'));
     if (!this.channel) return Promise.reject(Error('Cannot send slack notification without a specified channel'));
-
     const message = this.buildPost(notification);
     const reply = this.buildReply(notification);
 
@@ -116,7 +115,7 @@ class Slack {
         if (response.ok === false) throw new Error(response);
 
         // All good
-        console.info('[Serverless Plugin Notification | Slack] Succesfully sent notification message');
+        logger('[Serverless Plugin Notification | Slack] Succesfully sent notification message');
 
         // Put function and endpoint listing to reply
         return Promise.all(Object.keys(reply).map(key => {
@@ -137,12 +136,12 @@ class Slack {
             .then(response => {
               if (response.ok === false) throw new Error(response);
               // All good
-              console.info('[Serverless Plugin Notification | Slack] Succesfully sent notification reply');
+              logger('[Serverless Plugin Notification | Slack] Succesfully sent notification reply');
             });
         }));
       })
       .catch(error => {
-        console.error(`[Serverless Plugin Notification | Slack] error sending one of the message, error \n${JSON.stringify(error)}`);
+        logger(`[Serverless Plugin Notification | Slack] error sending one of the message, error \n${JSON.stringify(error)}`);
         return;
       });
   }

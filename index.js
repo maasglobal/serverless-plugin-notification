@@ -21,13 +21,13 @@ class ServerlessPluginNotification {
       'before:deploy:deploy': () => Promise.bind(this)
         .then(() => Object.assign(this, this.getDeploymentInfo()))
         .then(() => this.buildDeploymentNotification('Deployment started', 'warning'))
-        .then(this.sendNotification),
+        .then(notification => this.sendNotification(notification, this.serverless.cli.consoleLog)),
 
       // after service deployment
       'after:deploy:deploy': () => Promise.bind(this)
         .then(() => Object.assign(this, this.getDeploymentInfo()))
         .then(() => this.buildDeploymentNotification('Deployment succeeded', 'good'))
-        .then(this.sendNotification),
+        .then(notification => this.sendNotification(notification, this.serverless.cli.consoleLog)),
     };
   }
 
@@ -67,11 +67,11 @@ class ServerlessPluginNotification {
     };
   }
 
-  sendNotification(notification) {
+  sendNotification(notification, logger) {
     const promises = [];
 
     if (this.slackHandler) {
-      promises.push(this.slackHandler.notify(notification));
+      promises.push(this.slackHandler.notify(notification, logger));
     }
 
     return Promise.all(promises);
