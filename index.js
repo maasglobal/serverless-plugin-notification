@@ -5,16 +5,17 @@ const Slack = require('./src/Slack');
 
 class ServerlessPluginNotification {
 
+  custom() {
+    return Object.assign(
+      this.serverless.service.custom.notification  || {}
+    );
+  }
+
   constructor(serverless, options) {
     this.serverless = serverless;
     this.invocationId = this.serverless.invocationId;
     this.options = options;
     this.service = this.serverless.service;
-    this.settings = this.getNotificationSettings();
-
-    if (this.settings.slack) {
-      this.slackHandler = new Slack(this.settings.slack);
-    }
 
     this.hooks = {
       // before service deployment
@@ -29,11 +30,6 @@ class ServerlessPluginNotification {
         .then(() => this.buildDeploymentNotification('Deployment succeeded', 'good'))
         .then(notification => this.sendNotification(notification, this.serverless.cli.consoleLog)),
     };
-  }
-
-  getNotificationSettings() {
-    const settings = this.service.custom.notification || {};
-    return settings;
   }
 
   getDeploymentInfo() {
@@ -52,7 +48,7 @@ class ServerlessPluginNotification {
   }
 
   buildDeploymentNotification(message, severity) {
-    const deployer = process.env.USER || process.env.LOGNAME || process.env.USERNAME || process.env.SUDO_USER || process.env.LNAME || this.settings.deployer || 'Unnamed deployer';
+    const deployer = process.env.USER || process.env.LOGNAME || process.env.USERNAME || process.env.SUDO_USER || process.env.LNAME || this.custom().deployer || 'Unnamed deployer';
     return {
       deployer,
       invocationId: this.invocationId,
@@ -70,8 +66,9 @@ class ServerlessPluginNotification {
   sendNotification(notification, logger) {
     const promises = [];
 
-    if (this.slackHandler) {
-      promises.push(this.slackHandler.notify(notification, logger));
+    if (this.custom().slack) {
+      var slackHandler = new Slack(this.custom().slack);
+      promises.push(slackHandler.notify(notification, logger));
     }
 
     return Promise.all(promises);
