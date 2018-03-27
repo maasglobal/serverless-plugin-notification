@@ -35,7 +35,7 @@ class Slack {
         {
           color: color,
           title: `${notification.message} ${icon} ${icon} ${icon}`,
-          text: `Invocation ID: ${notification.invocationId}\nStage: ${notification.stage}\nRegion: ${notification.region}\nDeployer:${notification.deployer}
+          text: `Invocation ID: ${notification.invocationId}\nStage: ${notification.stage}\nRegion: ${notification.region}\nDeployer: ${notification.deployer}
           `,
           author_name: 'Serverless Plugin Notification',
           author_link: 'https://github.com/maasglobal/serverless-plugin-notification',
